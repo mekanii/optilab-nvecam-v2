@@ -15,9 +15,37 @@ https://drive.google.com/file/d/1-bxrAXvkbZrfLR-7JcDn3UHu3VGRrkPf/view?usp=share
 https://etcher.balena.io/#download-etcher
 ```
 4. microSDHC Card (min 16GB)
+5. USB to Serial TTL adapter
 
 ## Setup
-### 1. Connect to WiFi
+### Flash Image
+1. Flash OS Image that has been downloaded to microSDHC Card using Balena Etcher.
+2. Plug in the microSDHC Card to Orange Pi
+3. Plug in the USB to Serial TTL into Orange Pi serial port. The wiring is:
+
+<table>
+  <th>
+    <td>Orange Pi</td>
+    <td>USB to Serial TTL</td>
+  </th>
+  <tr>
+    <td>RX</td>
+    <td>TX</td>
+  </tr>
+  <tr>
+    <td>TX</td>
+    <td>RX</td>
+  </tr>
+  <tr>
+    <td>GND</td>
+    <td>GND</td>
+  </tr>
+</table>
+
+4. Boot up the Orange Pi
+
+
+### Connect to WiFi
 List available WiFi networks
 ```bash
 nmcli dev wifi list
@@ -29,13 +57,13 @@ sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
 sudo nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
-### 2. Update your system
+### 4. Update your system
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
 ```
 
-### 3. Install Python 3 and pip3
+### 5. Install Python 3 and pip3
 Install Python 3.9 or newer
 ```bash
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
@@ -55,13 +83,13 @@ Check the new Python version
 python3.9 --version
 ```
 
-### 4. Update pip and setuptools
+### 6. Update pip and setuptools
 First, use the trusted host flag
 ```bash
 pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools
 ```
 
-### 5. Make Python 3 the default (Optional)
+### 7. Make Python 3 the default (Optional)
 Create aliases in .bashrc
 ```bash
 sudo nano ~/.bashrc
@@ -78,7 +106,7 @@ Then apply changes:
 source ~/.bashrc
 ```
 
-### 6. Check System Time
+### 8. Check System Time
 Check current time
 ```bash
 date

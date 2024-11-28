@@ -1,4 +1,4 @@
-# OptiLab nVeCam
+# OptiLab NVeCam
 
 Kamera Pemeriksaan Serviks
 

@@ -42,7 +42,12 @@ https://etcher.balena.io/#download-etcher
   </tr>
 </table>
 
-4. Boot up the Orange Pi
+4. Boot up the Orange Pi till show login prompt
+5. Input the default credentials
+```
+username: root
+password: orangepi
+```
 
 
 ### Connect to WiFi
@@ -57,13 +62,13 @@ sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
 sudo nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
-### 4. Update your system
+### Update your system
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
 ```
 
-### 5. Install Python 3 and pip3
+### Install Python 3 and pip3
 Install Python 3.9 or newer
 ```bash
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
@@ -83,13 +88,13 @@ Check the new Python version
 python3.9 --version
 ```
 
-### 6. Update pip and setuptools
+### Update pip and setuptools
 First, use the trusted host flag
 ```bash
 pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools
 ```
 
-### 7. Make Python 3 the default (Optional)
+### Make Python 3 the default (Optional)
 Create aliases in .bashrc
 ```bash
 sudo nano ~/.bashrc
@@ -106,7 +111,7 @@ Then apply changes:
 source ~/.bashrc
 ```
 
-### 8. Check System Time
+### Check System Time
 Check current time
 ```bash
 date

@@ -5,10 +5,16 @@ Kamera Pemeriksaan Serviks
 ## Features
 
 ## Pre-requisites
-
-Orange Pi Zero 2.1.0 Ubuntu Xenial Server Linux 3.4.113
-
+1. Orange Pi Zero
+2. Orange Pi Zero 2.1.0 Ubuntu Xenial Server Linux 3.4.113
+```
+https://drive.google.com/file/d/1-bxrAXvkbZrfLR-7JcDn3UHu3VGRrkPf/view?usp=share_link
+```
+3. Balena Etcher
+```
 https://etcher.balena.io/#download-etcher
+```
+4. microSDHC Card (min 16GB)
 
 ## Setup
 ### 1. Connect to WiFi

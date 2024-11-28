@@ -24,10 +24,10 @@ https://etcher.balena.io/#download-etcher
 3. Plug in the USB to Serial TTL into Orange Pi serial port. The wiring is:
 
 <table>
-  <th>
+  <tr>
     <td>Orange Pi</td>
     <td>USB to Serial TTL</td>
-  </th>
+  </tr>
   <tr>
     <td>RX</td>
     <td>TX</td>

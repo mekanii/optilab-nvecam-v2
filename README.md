@@ -29,7 +29,6 @@ sudo apt-get upgrade
 ### 2. Install Python 3 and pip3
 ```
 # Install Python 3.9 or newer
-sudo apt-get update
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev \
   libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
 
@@ -90,31 +89,3 @@ sudo apt-get autoremove
 df -h
 ```
 Remember to backup any important data before making significant system changes!
-
-## Configure Orange Pi
-To configure your Orange Pi Zero to boot without prompting for a username and password, you can enable automatic login. Here’s how to do it
-
-### 1. Create the Directory (if it doesn't exist):
-```
-sudo mkdir -p /etc/systemd/system/getty@ttyS0.service.d
-```
-
-### 2. Create the Configuration File:
-```
-echo -e "[Service]\nExecStart=\nExecStart=-/sbin/agetty --noclear -o '-p --' -n -t 60 %I \$TERM" | sudo tee /etc/systemd/system/getty@ttyS0.service.d/override.conf
-```
-
-### 3. Reload the Systemd Daemon:
-```
-sudo systemctl daemon-reload
-```
-
-### 4. Enable the getty Service:
-```
-sudo systemctl enable getty@ttyS0.service
-```
-
-### 5. Reboot the System:
-```
-sudo reboot
-```

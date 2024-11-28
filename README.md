@@ -10,8 +10,8 @@ Orange Pi Zero 2.1.0 Ubuntu Xenial Server Linux 3.4.113
 
 https://etcher.balena.io/#download-etcher
 
-
-### Connect to WiFi
+## Setup
+### 1. Connect to WiFi
 List available WiFi networks
 ```
 nmcli dev wifi list
@@ -23,14 +23,13 @@ sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
 sudo nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
-
-### 1. First, update your system
+### 2. Update your system
 ```
 sudo apt-get update
 sudo apt-get upgrade
 ```
 
-### 2. Install Python 3 and pip3
+### 3. Install Python 3 and pip3
 Install Python 3.9 or newer
 ```
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
@@ -73,7 +72,7 @@ Then apply changes:
 source ~/.bashrc
 ```
 
-### Check System Time
+### 6. Check System Time
 Check current time
 ```
 date

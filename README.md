@@ -77,6 +77,7 @@ sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev l
 
 Download and install Python 3.9
 ```bash
+# Download the source code
 wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz
 tar -xf Python-3.9.7.tgz
 cd Python-3.9.7

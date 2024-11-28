@@ -1,0 +1,15 @@
+# ... existing code ...
+
+# Python
+venv/
+env/
+.env/
+.venv/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+.pytest_cache/
+.python-version

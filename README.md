@@ -13,7 +13,7 @@ https://etcher.balena.io/#download-etcher
 ## Setup
 ### 1. Connect to WiFi
 List available WiFi networks
-```
+```bash
 nmcli dev wifi list
 ```
 

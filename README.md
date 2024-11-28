@@ -10,6 +10,7 @@ Orange Pi Zero 2.1.0 Ubuntu Xenial Server Linux 3.4.113
 
 https://etcher.balena.io/#download-etcher
 
+
 ### Connect to WiFi
 List available WiFi networks
 ```
@@ -21,6 +22,7 @@ Connect to WiFi
 sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
 sudo nmcli dev wifi connect "miconos2" password "miconos1"
 ```
+
 
 ### 1. First, update your system
 ```

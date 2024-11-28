@@ -61,7 +61,6 @@ nmcli dev wifi list
 Connect to WiFi
 ```bash
 sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
-sudo nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
 ### Update your system

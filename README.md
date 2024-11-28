@@ -14,8 +14,9 @@ https://drive.google.com/file/d/1-bxrAXvkbZrfLR-7JcDn3UHu3VGRrkPf/view?usp=share
 ```
 https://etcher.balena.io/#download-etcher
 ```
-4. microSDHC Card (min 16GB)
-5. USB to Serial TTL adapter
+4. Serial monitor (Putty, CoolTerminal)
+5. microSDHC Card (min 16GB)
+6. USB to Serial TTL adapter
 
 ## Setup
 ### Flash Image
@@ -42,8 +43,9 @@ https://etcher.balena.io/#download-etcher
   </tr>
 </table>
 
-4. Boot up the Orange Pi till show login prompt
-5. Input the default credentials
+4. Open Serial Monitor, connect to device with baudrate=115200
+5. Boot up the Orange Pi till show login prompt
+6. Input the default credentials
 ```
 username: root
 password: orangepi

@@ -75,13 +75,26 @@ Install dependencies
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
 ```
 
-Download and install Python 3.9
+#### Download and install Python 3.9
+Download the source code
 ```bash
-# Download the source code
 wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz
+```
+Extract the tarball
+```bash
 tar -xf Python-3.9.7.tgz
 cd Python-3.9.7
+```
+Configure the build
+```bash
 ./configure --enable-optimizations
+```
+Compile the source code
+```bash
+make
+```
+Install without overwriting the default Python
+```bash
 sudo make altinstall
 ```
 

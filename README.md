@@ -63,14 +63,14 @@ Connect to WiFi
 sudo nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
 ```
 
-### Update your system
+### System Update
 ```bash
 sudo apt-get update
 sudo apt-get upgrade
 ```
 
-### Install Python 3 and pip3
-Install Python 3.9 or newer
+### Install Python 3
+Install dependencies
 ```bash
 sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
 ```

@@ -51,7 +51,6 @@ username: root
 password: orangepi
 ```
 
-<br>
 ### Connect to WiFi
 List available WiFi networks
 ```bash

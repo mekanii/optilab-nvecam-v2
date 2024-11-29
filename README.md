@@ -158,5 +158,3 @@ sudo apt-get install libgtk2.0-dev pkg-config
 sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev
 sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
 ```
-
-https://www.piwheels.org/simple/uvloop/uvloop-0.21.0b1-cp311-cp311-linux_armv7l.whl#sha256=a1bbc2ecd057d8ac61999cc81f53d3c477386d8b91baa6b67b93bfb38f6caabc

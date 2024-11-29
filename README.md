@@ -135,31 +135,28 @@ df -h
 Remember to backup any important data before making significant system changes!
 
 # NiceGUI
-## Build uvloop From Source
-Clone the repository
+## Install pre-compiled uvloop for armv7l from pywheels
 ```bash
-git clone --recursive https://github.com/MagicStack/uvloop.git
-cd uvloop
-```
-
-Create a virtual environment and activate it:
-```bash
-python -m venv uvloop-dev
-source uvloop-dev/bin/activate
-```
-
-Install development dependencies
-```bash
-pip install -e .[dev]
-```
-
-Build and run tests
-```bash
-make
-make test
+pip install https://www.piwheels.org/simple/uvloop/uvloop-0.21.0-cp39-cp39-linux_armv7l.whl#sha256=ad1a4a5a50e4cd1bbad593aef42c1e9ff0aff0a88b5b9148a873c3cc6d4f74ea
 ```
 
 ## Install NiceGUI
 ```bash
 pip install nicegui
 ```
+
+# OpenCV
+## Install OpenCV
+Run the following command to install OpenCV using pip
+```bash
+pip install opencv-python
+```
+## Install Additional Dependencies (if needed)
+If you are using OpenCV with additional features (like GUI support), you may need to install additional dependencies.
+```bash
+sudo apt-get install libgtk2.0-dev pkg-config
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
+```
+
+https://www.piwheels.org/simple/uvloop/uvloop-0.21.0b1-cp311-cp311-linux_armv7l.whl#sha256=a1bbc2ecd057d8ac61999cc81f53d3c477386d8b91baa6b67b93bfb38f6caabc

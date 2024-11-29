@@ -146,10 +146,18 @@ pip install nicegui
 ```
 
 # OpenCV
-## Install OpenCV
-Run the following command to install OpenCV using pip
+## Install pre-compiled OpenCV for armv7l from pywheels
+Download the file
 ```bash
-pip install opencv-python
+wget https://www.piwheels.org/simple/opencv-python/opencv_python-4.6.0.66-cp39-cp39-linux_armv7l.whl
+```
+Verify the Download
+```bash
+file opencv_python-4.6.0.66-cp39-cp39-linux_armv7l.whl
+```
+Install
+```bash
+pip install opencv_python-4.6.0.66-cp39-cp39-linux_armv7l.whl
 ```
 ## Install Additional Dependencies (if needed)
 If you are using OpenCV with additional features (like GUI support), you may need to install additional dependencies.

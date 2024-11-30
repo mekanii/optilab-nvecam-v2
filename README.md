@@ -6,9 +6,9 @@ Kamera Pemeriksaan Serviks
 
 # Pre-requisites
 1. Orange Pi Zero
-2. Orange Pi Zero 2.1.0 Ubuntu Xenial Server Linux 3.4.113
+2. Minimal/IOT images with Armbian Linux v6.6
 ```
-https://drive.google.com/file/d/1-bxrAXvkbZrfLR-7JcDn3UHu3VGRrkPf/view?usp=share_link
+https://dl.armbian.com/orangepizero/Bookworm_current_minimal
 ```
 3. Balena Etcher
 ```

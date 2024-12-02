@@ -110,4 +110,4 @@ def setup() -> None:
 # All the setup is only done when the server starts. This avoids the webcam being accessed by the auto-reload main process
 app.on_startup(setup)
 
-ui.run()
+ui.run(show=False)

@@ -98,7 +98,59 @@ sudo apt-get update
 sudo apt-get upgrade
 ```
 
-## Install and Upgrade pip
+## Install Python 3.9
+Install dependencies
+```bash
+sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
+```
+
+### Download and install Python 3.9
+Download the source code
+```bash
+wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz
+```
+Extract the tarball
+```bash
+tar -xf Python-3.9.7.tgz
+cd Python-3.9.7
+```
+Configure the build
+```bash
+./configure --enable-optimizations
+```
+Install without overwriting the default Python
+```bash
+sudo make altinstall
+```
+
+Check the new Python version
+```bash
+python3.9 --version
+```
+
+### Make Python 3.9 the default
+Add Python 3.9 as an alternative for the python command and setting its priority to 1
+```bash
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1
+```
+
+Create the New Symbolic Link
+```bash
+sudo ln -s /usr/local/bin/pip3.9 /usr/bin/pip3
+# pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools
+```
+
+Create a link for lsb_release missing file.
+```bash
+sudo ln -s /usr/share/pyshared/lsb_release.py /usr/local/lib/python3.8/site-packages/lsb_release.py
+```
+
+Upgrade pip
+```bash
+/usr/local/bin/python3.9 -m pip install --upgrade pip
+```
+
+<!-- ## Install and Upgrade pip
 ```bash
 wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
 python get-pip.py
@@ -107,22 +159,27 @@ pip install --upgrade setuptools
 or
 ```bash
 sudo apt-get install python-pip && pip install --upgrade pip
+``` -->
+
+## Create or Modify the pip Configuration File
+Change from packages source from PyPi to piwheels
+```bash
+echo -e "[global]\nindex-url = https://www.piwheels.org/simple" | sudo tee /etc/pip.conf
 ```
 
-# OpenCV
-## Install Additional Dependencies (if needed)
+## OpenCV
+### Install Additional Dependencies (if needed)
 If you are using OpenCV with additional features (like GUI support), you may need to install additional dependencies.
 ```bash
 # Install developer tools:
 sudo apt-get install build-essential cmake pkg-config
 
 # Install the IO package
-sudo apt-get install python-dev python2.7-dev python3.5-dev python-numpy 
+sudo apt-get install python-dev python2.7-dev python3.5-dev python3.9-dev python-numpy 
 sudo apt-get install libtbb2 libtbb-dev libjpeg-dev libtiff-dev libjasper-dev libpng-dev libdc1394-22-dev
 
 # although it’s unlikely that you’ll be doing a lot of video processing
-sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-sudo apt-get install libxvidcore-dev libx264-dev
+sudo apt-get install ffmpeg libavutil-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev
 
 # GTK development library for OpenCV’s GUI interface
 sudo apt-get install libgtk2.0-dev
@@ -131,30 +188,30 @@ sudo apt-get install libgtk2.0-dev
 sudo apt-get install libatlas-base-dev gfortran
 ```
 
-## Install Numpy
+### Install Numpy
 ```bash
-pip install numpy
+pip3 install numpy
 ```
 
-## Install OpenCV
+### Install OpenCV
 Tools to deal with the video frames
 ```bash
 sudo apt-get python-opencv
 ```
 
-# Flask
+## Flask
 Package to build a simple web app
 ```bash
-pip install "Flask[async]"
+pip3 install -v "Flask[async]"
 ```
 
-# WebRTC
+## WebRTC
 To add real-time streaming capability to our web app. We’ll directly be using aiortc python package which combines WebRTC and asyncio.
 ```bash
-pip install aiortc
+pip3 install -v aiortc
 ```
 
-# Git Clone
+## Git Clone
 ```bash
 git clone https://github.com/mekanii/optilab-nvecam-v2
 ```

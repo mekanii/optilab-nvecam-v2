@@ -68,7 +68,19 @@ sudo apt-get install libatlas-base-dev
 pip3 uninstall numpy --break-system-packages
 pip3 install "numpy<2.0.0" --break-system-packages
 
-sudo apt-get install ufw
-sudo ufw allow 8080
-sudo ufw enable
+# sudo apt-get install ufw
+# sudo ufw allow 8080
+# sudo ufw enable
+
+pip3 install gunicorn --break-system-packages
+```
+
+to run
+```bash
+gunicorn -w 4 -b 0.0.0.0:8080 wsgi:app \
+    --timeout 120 \
+    --keep-alive 5 \
+    --log-level debug \
+    --worker-class gthread \
+    --threads 4
 ```

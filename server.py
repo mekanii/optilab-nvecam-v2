@@ -29,7 +29,7 @@ def generate_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
             elapsed_time = time.time() - start_time
-            logging.debug(f"Frame generation time: {elapsed_time} seconds")
+            # logging.debug(f"Frame generation time: {elapsed_time} seconds")
 
 # Route to render the HTML template
 @app.route('/')

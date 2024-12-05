@@ -16,7 +16,7 @@ pcs = set()
 
 # Function to generate video frames from the camera
 def generate_frames():
-    camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    camera = cv2.VideoCapture(0)
     camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     while True:

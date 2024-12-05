@@ -82,88 +82,118 @@ pip3 install "numpy<2.0.0" --break-system-packages
 
 pip3 install gunicorn --break-system-packages
 
-sudo apt-get install isc-dhcp-server
+sudo apt-get install make
 
-echo "
-interface=wlan0
-ieee80211n=1
-hw_mode=g
-channel=7
-wmm_enabled=1
-auth_algs=1
-ignore_broadcast_ssid=0
-ssid=OptiLab_NVeCam
-wpa_passphrase=12345678
-wpa=2
-wpa_key_mgmt=WPA-PSK
-rsn_pairwise=CCMP" | sudo tee -a /etc/hostapd/hostapd.conf
+# sudo apt-get install isc-dhcp-server
 
-sudo mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.bak
+# sudo mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.bak
+# sudo rm -rf /etc/hostapd/hostapd.conf
 
-echo "
-auto eth0
-iface eth0 inet static
-address 192.168.5.200
-netmask 255.255.255.0
-gateway 192.168.5.1
-dns-nameservers 192.168.5.1
+# echo "
+# interface=wlan0
+# bridge=br0
+# ieee80211n=1
+# hw_mode=g
+# channel=7
+# wmm_enabled=1
+# auth_algs=1
+# ssid=OptiLab_NVeCam
+# wpa_passphrase=12345678
+# wpa=2
+# wpa_key_mgmt=WPA-PSK
+# rsn_pairwise=CCMP" | sudo tee -a /etc/hostapd/hostapd.conf
 
-allow-hotplug wlan0
-iface wlan0 inet static
-address 192.168.10.1
-netmask 255.255.255.0" | sudo tee -a /etc/network/interfaces
+# sudo sed -i 's/^#DAEMON_CONF=""/DAEMON_CONF="\/etc\/hostapd\/hostapd.conf"/' /etc/default/hostapd
 
-sudo sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-sudo sysctl -p
+# echo "
+# auto lo
+# iface lo inet loopback
 
-sudo sed -i 's/DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf
+# allow-hotplug wlan0
+# iface wlan0 inet manual
+# wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
 
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+# iface default inet static
+# address 192.168.10.1
+# netmask 255.255.255.0" | sudo tee -a /etc/network/interfaces
 
-sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+# sudo sed -i 's/^#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+# sudo sysctl -p
 
-sudo sed -i '/exit 0/i iptables-restore < /etc/iptables.ipv4.nat' /etc/rc.local
+# sudo sed -i 's/DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf
 
-sudo service isc-dhcp-server stop
-sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
+# sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+# sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 
-rm -rf /etc/dhcp/dhcpd.conf
+# sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
-echo "
-subnet 192.168.10.0 netmask 255.255.255.0 {
-  range 192.168.10.100 192.168.10.200;
-  option routers 192.168.10.1;
-  option subnet-mask 255.255.255.0;
-  option broadcast-address 192.168.10.255;
-  option domain-name \"miconos.co.id\";
-  option domain-name-servers 192.168.10.1, 8.8.8.8;
-  default-lease-time 600;
-  max-lease-time 7200;
-}" | sudo tee -a /etc/dhcp/dhcpd.conf
+# sudo mv /etc/rc.local /etc/rc.bak
+# rm -rf /etc/rc.local
+# echo "
+# iptables-restore < /etc/iptables.ipv4.nat
+# exit 0
+# " | sudo tee -a /etc/rc.local
 
-sudo service isc-dhcp-server start
+# sudo service isc-dhcp-server stop
+# sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
 
-sudo sed -i '/^INTERFACESv4=""\|^INTERFACESv6=""/d' /etc/default/isc-dhcp-server
+# rm -rf /etc/dhcp/dhcpd.conf
 
-echo "INTERFACES=\"wlan0\"" | sudo tee -a /etc/default/isc-dhcp-server
-# or
-echo "INTERFACESv4=\"wlan0\"" | sudo tee -a /etc/default/isc-dhcp-server
+# echo "
+# subnet 192.168.10.0 netmask 255.255.255.0 {
+#   range 192.168.10.100 192.168.10.200;
+#   option routers 192.168.10.1;
+#   option subnet-mask 255.255.255.0;
+#   option broadcast-address 192.168.10.255;
+#   option domain-name \"miconos.co.id\";
+#   option domain-name-servers 192.168.10.1, 8.8.8.8;
+#   default-lease-time 600;
+#   max-lease-time 7200;
+# }" | sudo tee -a /etc/dhcp/dhcpd.conf
+
+# sudo sed -i '/^INTERFACESv4=""\|^INTERFACESv6=""/d' /etc/default/isc-dhcp-server
+
+# echo "INTERFACES=\"wlan0\"" | sudo tee -a /etc/default/isc-dhcp-server
+# # or
+# echo "INTERFACESv4=\"wlan0\"" | sudo tee -a /etc/default/isc-dhcp-server
 
 # sudo sed -i 's/^INTERFACES=""/INTERFACES="wlan0"/' /etc/default/isc-dhcp-server
 # sudo sed -i 's/^INTERFACES="wlan0"/INTERFACESv4="wlan0"/' /etc/default/isc-dhcp-server
 
-sudo systemctl restart hostapd
-sudo systemctl enable hostapd
-sudo systemctl status hostapd
+# sudo systemctl restart hostapd
+# sudo systemctl enable hostapd
+# sudo systemctl status hostapd
 
-sudo service isc-dhcp-server start
+# sudo service isc-dhcp-server start
+
+echo "
+[Unit]
+Description=Create AP Hotspot
+After=network.target
+
+[Service]
+ExecStart=create_ap -c 7 -n wlan0 OptiLab_NVeCam 12345678 -g 192.168.10.1 --no-virt
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target" | sudo tee -a /etc/systemd/system/hotspot_ap.service
+
+sudo systemctl stop wpa_supplicant
+sudo systemctl disable wpa_supplicant
+sudo systemctl status wpa_supplicant
+
+sudo systemctl enable hotspot_ap
+sudo systemctl start hotspot_ap
+sudo systemctl status hotspot_ap
+
 
 ```
 
 to run
 ```bash
+gunicorn -w 2 -b 0.0.0.0:8080 wsgi:app --timeout 120 --keep-alive 5 --log-level debug --worker-class gthread --threads 2
 gunicorn -w 4 -b 0.0.0.0:8080 wsgi:app --timeout 120 --keep-alive 5 --log-level debug --worker-class gthread --threads 4
 ```
 

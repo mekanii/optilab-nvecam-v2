@@ -16,9 +16,11 @@ pcs = set()
 
 # Function to generate video frames from the camera
 def generate_frames():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     while True:
-      start_time = time.time()
+      # start_time = time.time()
       success, frame = camera.read()
       if not success:
         break
@@ -28,8 +30,8 @@ def generate_frames():
         # Concatenate frame and yield for streaming
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
-        elapsed_time = time.time() - start_time
-        logging.debug(f"Frame generation time: {elapsed_time} seconds")
+        # elapsed_time = time.time() - start_time
+        # logging.debug(f"Frame generation time: {elapsed_time} seconds")
 
 # Route to render the HTML template
 @app.route('/')

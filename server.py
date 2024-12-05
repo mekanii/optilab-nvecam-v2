@@ -19,17 +19,24 @@ def generate_frames():
     camera = cv2.VideoCapture(0)
     camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    while True:
+    
+    while camera.isOpened():
       # start_time = time.time()
       success, frame = camera.read()
-      if not success:
-        break
-      else:
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-        # Concatenate frame and yield for streaming
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
+      ret, buffer = cv2.imencode('.jpg', frame)
+      frame = buffer.tobytes()
+      yield (b'--frame\r\n'
+              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
+    camera.release()
+    cv2.destroyAllWindows()
+      # if not success:
+      #   break
+      # else:
+      #   ret, buffer = cv2.imencode('.jpg', frame)
+      #   frame = buffer.tobytes()
+      #   # Concatenate frame and yield for streaming
+      #   yield (b'--frame\r\n'
+      #           b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
         # elapsed_time = time.time() - start_time
         # logging.debug(f"Frame generation time: {elapsed_time} seconds")
 

@@ -8,12 +8,18 @@ Before you begin, ensure you have the following:
 - **USB to Serial TTL Adapter**
 
 # Installation Steps
-##  1.  Flash the OS Image:
-        - Use Balena Etcher to flash the downloaded OS image onto the microSDHC card.
-        - Insert the microSDHC card into the Orange Pi.
+##  1. Flash the OS Image:
+- Use Balena Etcher to flash the downloaded OS image onto the microSDHC card.
+- Insert the microSDHC card into the Orange Pi.
 
 ##  2. Connect the USB to Serial TTL:
 Connect the USB to Serial TTL adapter to the Orange Pi serial port. The wiring is as follows:
+| Orange Pi | USB to Serial TTL |
+|-----------|-------------------|
+| RX        | TX                |
+| TX        | RX                |
+| GND       | GND               |
+
 # Connect to WiFi
 ```bash
 nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"

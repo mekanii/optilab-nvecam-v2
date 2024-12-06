@@ -20,6 +20,15 @@ Connect the USB to Serial TTL adapter to the Orange Pi serial port. The wiring i
 | TX        | RX                |
 | GND       | GND               |
 
+## 3. Open Serial Monitor:
+- Connect to the device with a baud rate of 115200.
+- Boot up the Orange Pi until you see the login prompt.
+
+## 4. Login:
+Use the default credentials:
+- Username: `root`
+- Password: `orangepi`
+
 # Connect to WiFi
 ```bash
 nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"

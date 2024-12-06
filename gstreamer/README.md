@@ -32,60 +32,72 @@ Use the default credentials:
 # Connect to WiFi
 ```bash
 nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
-nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
-# Install Required Tools
-## Install Python 3.9
-Install dependencies
+# Update System
+```bash
+apt-get update
+apt-get upgrade
+```
+
+# Install Python 3.9 and pip3
+## Download and install Python3.9
+### 1. Install required tools
 ```bash
 apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev
 ```
 
-### Download and install Python 3.9
-Download the source code
+## 2. Download the source code
 ```bash
 wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz
 ```
-Extract the tarball
+## 3. Extract the tarball
 ```bash
 tar -xf Python-3.9.7.tgz
 cd Python-3.9.7
 ```
-Configure the build
+
+## 4. Configure the build
 ```bash
 ./configure --enable-optimizations
 ```
-Install without overwriting the default Python
+
+## 5. Install without overwriting the default Python
 ```bash
 sudo make altinstall
 ```
 
-Check the new Python version
+## 6. Check the new Python version
 ```bash
 python3.9 --version
 ```
 
-### Make Python 3.9 the default
-Add Python 3.9 as an alternative for the python command and setting its priority to 1
+## 7. Make Python 3.9 the default
+- Add Python 3.9 as an alternative for the python command and setting its priority to 1
 ```bash
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1
 ```
 
-Create the New Symbolic Link
+- Create the New Symbolic Link
 ```bash
 sudo ln -s /usr/local/bin/pip3.9 /usr/bin/pip3
 # pip3 install --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools
 ```
 
-Create a link for lsb_release missing file.
+## Upgrade pip3
+### 1. Create a link for lsb_release missing file
 ```bash
-sudo ln -s /usr/share/pyshared/lsb_release.py /usr/local/lib/python3.8/site-packages/lsb_release.py
+sudo ln -s /usr/share/pyshared/lsb_release.py /usr/local/lib/python3.9/site-packages/lsb_release.py
 ```
 
-Upgrade pip
+### 2. Upgrade pip
 ```bash
 /usr/local/bin/python3.9 -m pip install --upgrade pip
+```
+
+### 3. Check pip version
+```bash
+pip3 --version
 ```
 
 ```bash
@@ -97,14 +109,14 @@ pip install setuptools
 pip install --upgrade pip
 ``` -->
 
-## Install GStreamer
+# Install GStreamer
 ```bash
 apt-get install gstreamer1.0-tools gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
 ```
 
-## Install Flask
+# Install Flask
 ```bash
-pip install flask
+pip3 install flask
 ```
 
 # Python Backend with GStreamer

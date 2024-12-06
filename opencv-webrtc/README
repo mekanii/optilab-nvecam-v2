@@ -1,0 +1,159 @@
+```bash
+echo '
+auto lo
+iface lo inet loopback
+
+auto end0
+allow-hotplug end0
+iface end0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-roam
+/etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp' | sudo tee /etc/network/interfaces
+
+echo '
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+  ssid="miconos2"
+  psk="miconos1"
+  key_mgmt=WPA-PSK
+}
+' | sudo tee /etc/wpa_supplicant/wpa_supplicant.conf
+
+# Create wpa_supplicant configuration
+echo 'ctrl_interface=/run/wpa_supplicant
+ctrl_interface_group=wheel
+
+network={
+  ssid="miconos2"
+  psk="miconos1"
+  key_mgmt=WPA-PSK
+}' | sudo tee /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+
+# Bring interface up
+ip link set wlan0 up
+
+# Scan for networks
+iw dev wlan0 scan | grep SSID
+
+# Connect using wpa_supplicant
+sudo wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install python3-pip
+
+echo -e "[global]\nindex-url = https://www.piwheels.org/simple" | sudo tee /etc/pip.conf
+
+pip3 install "flask[async]" --break-system-packages
+pip3 install aiortc --break-system-packages
+pip3 install opencv-python-headless --break-system-packages
+
+sudo apt-get install libopenblas-dev
+sudo apt-get install libjpeg-dev libtiff-dev libpng-dev
+sudo apt-get install libopenjp2-7 libopenjp2-7-dev
+sudo apt-get install ffmpeg libavutil-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev
+sudo apt-get install libgtk-3-0 libgtk-3-dev
+sudo apt-get install libatlas-base-dev
+
+sudo apt-get install libsrtp2-dev
+
+sudo apt-get install libssl1.1
+# or
+wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.1_1.1.1w-0+deb11u2_armhf.deb
+sudo dpkg -i libssl1.1_1.1.1w-0+deb11u2_armhf.deb
+
+sudo apt-get install libvpx6
+# or
+wget http://http.us.debian.org/debian/pool/main/libv/libvpx/libvpx6_1.9.0-1+deb11u3_armhf.deb
+sudo dpkg -i libvpx6_1.9.0-1+deb11u3_armhf.deb
+
+pip3 uninstall numpy --break-system-packages
+pip3 install "numpy<2.0.0" --break-system-packages
+
+pip3 install gunicorn --break-system-packages
+
+sudo apt-get install make
+
+echo "
+[Unit]
+Description=Create AP Hotspot
+After=network.target
+
+[Service]
+ExecStart=create_ap -c 7 -n wlan0 OptiLab_NVeCam 12345678 -g 192.168.10.1 --no-virt
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target" | sudo tee -a /etc/systemd/system/hotspot_ap.service
+
+sudo systemctl stop wpa_supplicant
+sudo systemctl disable wpa_supplicant
+sudo systemctl status wpa_supplicant
+
+sudo systemctl enable hotspot_ap
+sudo systemctl start hotspot_ap
+sudo systemctl status hotspot_ap
+
+
+```
+
+to run
+```bash
+gunicorn -w 2 -b 0.0.0.0:8080 wsgi:app --timeout 120 --keep-alive 5 --log-level debug --worker-class gthread --threads 2
+gunicorn -w 4 -b 0.0.0.0:8080 wsgi:app --timeout 120 --keep-alive 5 --log-level debug --worker-class gthread --threads 4
+```
+
+
+sudo journalctl -u isc-dhcp-server.service --no-pager
+
+```bash
+echo "
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    all-eth-interfaces:
+      match:
+        name: "e*"
+      dhcp4: yes" | sudo tee -a /etc/netplan/10-dhcp-all-interfaces.yaml
+
+echo "
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    end0:
+      dhcp4: true" | sudo tee -a /etc/netplan/02-static-ip.yaml
+
+echo "
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    end0:
+      addresses:
+        - 192.168.1.216/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4" | sudo tee -a /etc/netplan/02-static-ip.yaml
+
+sudo chmod 600 /etc/netplan/*.yaml
+sudo netplan try
+sudo netplan apply
+# Cannot call openvswitch: ovsdb-server.service is not running.
+
+sudo sed -i 's|^ExecStart=/lib/systemd/systemd-networkd-wait-online|ExecStart=/lib/systemd/systemd-networkd-wait-online --interface=wlan0 --interface=eth0|' /lib/systemd/system/systemd-networkd-wait-online.service
+
+sudo sed -i '/^RemainAfterExit=yes/a TimeoutStartSec=30sec' /lib/systemd/system/systemd-networkd-wait-online.service
+```

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camera Stream Control</title>
+</head>
+<body>
+  <h1>Camera Streaming</h1>
+  <form action="/start_stream" method="post">
+    <label for="encoding">Encoding:</label>
+    <select name="encoding" id="encoding">
+      <option value="h264">H.264</option>
+      <option value="mjpeg">MJPEG</option>
+      <option value="vp8">VP8</option>
+    </select><br><br>
+
+    <label for="bitrate">Bitrate (kbps):</label>
+    <input type="number" name="bitrate" id="bitrate" value="1000"><br><br>
+
+    <label for="resolution">Resolution:</label>
+    <select name="resolution" id="resolution">
+      <option value="640x480">640x480</option>
+      <option value="1280x720">1280x720</option>
+      <option value="1920x1080">1920x1080</option>
+    </select><br><br>
+
+    <label for="fps">Frame Rate (FPS):</label>
+    <input type="number" name="fps" id="fps" value="30"><br><br>
+
+    <button type="submit">Start Stream</button>
+  </form>
+
+  <form action="/stop_stream" method="post">
+    <button type="submit">Stop Stream</button>
+  </form>
+</body>
+</html>

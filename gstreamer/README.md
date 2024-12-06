@@ -1,3 +1,19 @@
+# Prerequisites
+Before you begin, ensure you have the following:
+- **Orange Pi Zero**
+- **Orange Pi OS** (Ubuntu Xenial Server)
+- **Balena Etcher** for flashing images
+- **Serial Monitor** (e.g., Putty, CoolTerminal)
+- **microSDHC Card** (minimum 16GB)
+- **USB to Serial TTL Adapter**
+
+# Installation Steps
+##  1.  Flash the OS Image:
+        - Use Balena Etcher to flash the downloaded OS image onto the microSDHC card.
+        - Insert the microSDHC card into the Orange Pi.
+
+##  2. Connect the USB to Serial TTL:
+Connect the USB to Serial TTL adapter to the Orange Pi serial port. The wiring is as follows:
 # Connect to WiFi
 ```bash
 nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"

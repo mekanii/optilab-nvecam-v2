@@ -1,4 +1,8 @@
 ```sh
+https://github.com/danielkucera/FFmpeg/blob/cedrus264/INSTALL.md
+```
+
+```sh
 echo '
 auto lo
 iface lo inet loopback

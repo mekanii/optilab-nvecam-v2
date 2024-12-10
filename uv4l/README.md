@@ -221,15 +221,13 @@ Priority: 2
 ```
 
 ```sh
-sudo openssl genrsa -out selfsign.key 2048 && sudo openssl req -new -x509 -key selfsign.key -out selfsign.crt -sha256
+apt-get install usbutils
+```
 
-mv selfsign.* /etc/uv4l/
-
-cat /etc/uv4l/uv4l-uvc.conf
-
+```sh
 uv4l --external-driver --device-name=video0 --server-option '--port=8080'
 
-uv4l --driver uvc --device-id 05a3:9320 --encoding --server-option '--port=8080' --config-file=/etc/uv4l/uv4l-uvc.conf
+uv4l --driver uvc --device-id 05a3:9320 --server-option '--port=8080' --config-file=/etc/uv4l/uv4l-uvc.conf
 ```
 device-path=004:002
 device-id=05a3:9320

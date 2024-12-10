@@ -1,3 +1,4 @@
+sudo tee optilab-nvecam-v2/gstreamer/server.py <<EOF
 from flask import Flask, render_template, request, Response
 import subprocess
 import os
@@ -106,3 +107,4 @@ def video_feed():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+EOF

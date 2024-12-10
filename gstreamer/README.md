@@ -32,6 +32,7 @@ Use the default credentials:
 # Connect to WiFi
 ```bash
 nmcli dev wifi connect "YOUR_WIFI_NAME" password "YOUR_WIFI_PASSWORD"
+nmcli dev wifi connect "miconos2" password "miconos1"
 ```
 
 # Update System
@@ -111,7 +112,7 @@ pip install --upgrade pip
 
 # Install GStreamer
 ```bash
-apt-get install gstreamer1.0-tools gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
+apt-get install gstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly libgstreamer1.0-dev
 ```
 
 # Install Flask
@@ -119,104 +120,201 @@ apt-get install gstreamer1.0-tools gstreamer1.0-plugins-base gstreamer1.0-plugin
 pip3 install flask
 ```
 
-# Python Backend with GStreamer
-The Python backend will dynamically construct a GStreamer pipeline based on user input.
+# GStreamer Service 
+## 1. Create service
+```bash
+echo '
+[Unit]
+Description=OptiLab NVECam GStreamer Service
 
-server.py:
-```python
-from flask import Flask, render_template, request
-import subprocess
+[Service]
+ExecStart=/bin/bash -c 'python3 optilab-nvecam-v2/gstreamer/server.py'
+ExecStop=ExecStop=/usr/bin/pkill -f "python3 optilab-nvecam-v2/gstreamer/server.py"
+StandardOutput=journal
+StandardError=journal
+User=root
 
-app = Flask(_name_)
-process = None  # To store the GStreamer subprocess
-
-@app.route('/')
-def index():
-  return render_template("index.html")
-
-@app.route('/start_stream', methods=['POST'])
-def start_stream():
-  global process
-
-  # Stop any running GStreamer process
-  if process:
-      process.terminate()
-
-  # Get parameters from the form
-  encoding = request.form.get("encoding")
-  bitrate = request.form.get("bitrate")
-  resolution = request.form.get("resolution").split('x')
-  fps = request.form.get("fps")
-
-  width, height = resolution
-
-  # Construct GStreamer pipeline
-  pipeline = (
-    f"v4l2src device=/dev/video0 ! video/x-raw,width={width},height={height},framerate={fps}/1 ! "
-    f"videoconvert ! "
-    f"{'x264enc bitrate=' + bitrate if encoding == 'h264' else ''}"
-    f"{'jpegenc' if encoding == 'mjpeg' else ''}"
-    f"{'vp8enc' if encoding == 'vp8' else ''} ! "
-    f"rtpjpegpay name=pay0 ! "
-    f"udpsink host=0.0.0.0 port=5000"
-  )
-
-  # Start GStreamer process
-  process = subprocess.Popen(pipeline, shell=True)
-
-  return "Streaming started!"
-
-@app.route('/stop_stream', methods=['POST'])
-def stop_stream():
-  global process
-  if process:
-    process.terminate()
-    process = None
-  return "Streaming stopped!"
-
-if _name_ == '_main_':
-  app.run(host='0.0.0.0', port=8080)
+[Install]
+WantedBy=multi-user.target
+' | tee /etc/systemd/system/nvecam-gstreamer.service
 ```
 
-# HTML Interface
-The HTML allows users to configure encoding, bitrate, resolution, and frame rate.
-
-templates/index.html:
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Camera Stream Control</title>
-</head>
-<body>
-  <h1>Camera Streaming</h1>
-  <form action="/start_stream" method="post">
-    <label for="encoding">Encoding:</label>
-    <select name="encoding" id="encoding">
-      <option value="h264">H.264</option>
-      <option value="mjpeg">MJPEG</option>
-      <option value="vp8">VP8</option>
-    </select><br><br>
-
-    <label for="bitrate">Bitrate (kbps):</label>
-    <input type="number" name="bitrate" id="bitrate" value="1000"><br><br>
-
-    <label for="resolution">Resolution:</label>
-    <select name="resolution" id="resolution">
-      <option value="640x480">640x480</option>
-      <option value="1280x720">1280x720</option>
-      <option value="1920x1080">1920x1080</option>
-    </select><br><br>
-
-    <label for="fps">Frame Rate (FPS):</label>
-    <input type="number" name="fps" id="fps" value="30"><br><br>
-
-    <button type="submit">Start Stream</button>
-  </form>
-
-  <form action="/stop_stream" method="post">
-    <button type="submit">Stop Stream</button>
-  </form>
-</body>
-</html>
+## 2. systemctl command
+To start service:
+```bash
+systemctl start nvecam-gstreamer
 ```
+To stop service:
+```bash
+systemctl stop nvecam-gstreamer
+```
+To restart service:
+```bash
+systemctl restart nvecam-gstreamer
+```
+To enable service, so it will active after system boot:
+```bash
+systemctl enable nvecam-gstreamer
+```
+To monitor service status:
+```bash
+systemctl status nvecam-gstreamer --no-pager -l
+```
+
+# Access Point
+## 1. Install required tools
+```bash
+apt-get install hostapd
+apt-get install isc-dhcp-server
+```
+
+## 2. Setup interface
+Create /etc/network/interfaces
+```bash
+echo '
+allow-hotplug wlan0
+iface wlan0 inet static
+  address 192.168.10.1
+  netmask 255.255.255.0
+  broadcast 192.168.10.255
+  network 192.168.10.0
+' | tee /etc/network/interfaces
+```
+
+## 3. Setup hostapd
+### Create /etc/hostapd/hostapd.conf
+```bash
+echo '
+interface=wlan0
+ssid=OptiLab_NVeCam
+wpa_passphrase=12345678
+hw_mode=g
+ieee80211n=1
+channel=6
+wmm_enabled=1
+ignore_broadcast_ssid=0
+auth_algs=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+' | tee /etc/hostapd/hostapd.conf
+```
+
+### Update /etc/default/hostapd
+Activate **DAEMON_CONF** and change its value from **"/etc/hostapd.conf"** to **"/etc/hostapd/hostapd.conf"**
+```bash
+sed -i 's|^#DAEMON_CONF="/etc/hostapd.conf"|DAEMON_CONF="/etc/hostapd/hostapd.conf"|' /etc/default/hostapd
+```
+
+## 4. Setup dhcp server
+### Backup /etc/dhcp/dhcpd.conf
+```bash
+sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
+```
+
+### Create new /etc/dhcp/dhcpd.conf
+```bash
+echo '
+default-lease-time 600;
+max-lease-time 7200;
+option subnet-mask 255.255.255.0;
+option broadcast-address 192.168.10.255;
+option routers 192.168.10.1;
+option domain-name-servers 192.168.10.1,8.8.8.8;
+option domain-name "miconos.co.id";
+subnet 192.168.10.0 netmask 255.255.255.0 {
+range 192.168.10.100 192.168.10.150;
+}
+' | tee /etc/dhcp/dhcpd.conf
+```
+
+### Update /etc/default/isc-dhcp-server
+Assign **wlan0** to **INTERFACE** value
+```bash
+sed -i 's|^INTERFACES=""|INTERFACES="wlan0"|' /etc/default/isc-dhcp-server
+```
+
+### Update /etc/sysctl.conf
+Activate net.ipv4.ip_forward
+```bash
+sed -i 's|^#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
+```
+
+```bash
+sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+```
+
+### Setup iptables
+```bash
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+```
+
+To view current iptables
+```bash
+sudo iptables -L -n -v
+```
+
+```bash
+sh -c "iptables-save > /etc/iptables.ipv4.nat"
+```
+
+```bash
+echo '
+iptables-restore < /etc/iptables.ipv4.nat
+exit 0
+' | tee /etc/rc.local
+```
+
+## 5. systemctl command
+Stop and disable NetworkManager, otherwise the Access Point service won't start.
+```bash
+systemctl stop NetworkManager.service
+systemctl disable NetworkManager.service
+```
+
+Reload daemon
+```bash
+systemctl daemon-reload
+```
+
+To start:
+```bash
+systemctl start hostapd
+systemctl start isc-dhcp-server
+```
+
+To stop:
+```bash
+systemctl stop hostapd
+systemctl stop isc-dhcp-server
+```
+
+To restart:
+```bash
+systemctl restart hostapd
+systemctl restart isc-dhcp-server
+```
+
+To enable:
+```bash
+systemctl enable hostapd
+systemctl enable isc-dhcp-server
+```
+
+To monitor service status:
+```bash
+systemctl status hostapd --no-pager -l
+systemctl status isc-dhcp-server --no-pager -l
+```
+
+wget http://http.us.debian.org/debian/pool/main/g/gcc-10/gcc-10-base_10.2.1-6_armhf.deb
+wget http://http.us.debian.org/debian/pool/main/g/gcc-10/libgcc-s1_10.2.1-6_armhf.deb
+wget http://http.us.debian.org/debian/pool/main/libf/libffi/libffi7_3.3-6_armhf.deb
+
+dpkg -i gcc-10-base_10.2.1-6_armhf.deb
+dpkg -i libgcc-s1_10.2.1-6_armhf.deb
+dpkg -i libffi7_3.3-6_armhf.deb
+
+apt-get install python3-gi python3-gi-cairo gir1.2-gtk-3.0

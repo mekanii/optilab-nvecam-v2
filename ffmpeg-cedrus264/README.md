@@ -58,7 +58,7 @@ apt upgrade
 apt install ffmpeg
 ```
 
-`-ar[:stream_specifier] freq (input/output,per-stream)`
+`-ar[:stream_specifier] freq (input/output,per-stream)`<br>
 Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
 
 ```sh

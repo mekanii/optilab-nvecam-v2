@@ -78,7 +78,6 @@ As an input option, ignore any timestamps stored in the file and instead generat
 As an output option:
 - video encoding<br>
 Duplicate or drop frames right before encoding them to achieve constant output frame rate fps.
-
 - video streamcopy<br>
 Indicate to the muxer that fps is the stream frame rate. No data is dropped or duplicated in this case. This may produce invalid files if fps does not match the actual stream frame rate as determined by packet timestamps. See also the setts bitstream filter.
 

@@ -72,7 +72,7 @@ Start the server:
 ```sh
 ./mediamtx
 ```
-```
+`
 MediaMTX v1.10.0
 configuration loaded from /root/mediamtx.yml
 [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
@@ -80,7 +80,7 @@ configuration loaded from /root/mediamtx.yml
 [HLS] listener opened on :8888
 [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
 [SRT] listener opened on :8890 (UDP)
-```
+`
 
 **_-f fmt (input/output)_**<br>
 Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.

@@ -76,10 +76,10 @@ Set pixel format. Use -pix_fmts to show all the supported pixel formats. If the 
 Set frame rate (Hz value, fraction or abbreviation).
 As an input option, ignore any timestamps stored in the file and instead generate timestamps assuming constant frame rate fps. This is not the same as the -framerate option used for some input formats like image2 or v4l2 (it used to be the same in older versions of FFmpeg). If in doubt use -framerate instead of the input option -r.
 As an output option:
-- video encoding
+- video encoding<br>
 Duplicate or drop frames right before encoding them to achieve constant output frame rate fps.
 
-- video streamcopy
+- video streamcopy<br>
 Indicate to the muxer that fps is the stream frame rate. No data is dropped or duplicated in this case. This may produce invalid files if fps does not match the actual stream frame rate as determined by packet timestamps. See also the setts bitstream filter.
 
 **_-b bitrate_**<br>

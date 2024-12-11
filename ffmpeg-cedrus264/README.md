@@ -58,23 +58,47 @@ apt upgrade
 apt install ffmpeg
 ```
 
-**_-ar[:stream_specifier] freq (input/output,per-stream)_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
-**_-ac[:stream_specifier] channels (input/output,per-stream)_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
 **_-acodec codec (input/output)_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Set the audio codec. This is an alias for `-codec:a`.
+Set the audio codec. This is an alias for `-codec:a`.
 
 **_-f fmt (input/output)_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
-**_-i url (input)_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;input file url
-**_-c codec_**<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
-- c:v _codec:video_
-- c:a _codec:audio_
+Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
 
-**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**
+**_-i url (input)_**<br>
+input file url
+
+**_-c codec_**<br>
+Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
+- -c:v _codec:video_
+- -c:a _codec:audio_
+
+**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**<br>
+
+**_-b bitrate_**
+bitrate expressed in Kbits/s
+- -b:v _bitrate_video_
+- -b:a _bitrate_audio_
+
+**_-ar[:stream_specifier] freq (input/output,per-stream)_**<br>
+Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
+
+**_-ac[:stream_specifier] channels (input/output,per-stream)_**<br>
+Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
+
+**_-preset preset_name_**
+Provides the compression to encoding speed ratio. Try **_-preset veryfast_** if you are unsure of what to choose, then watch the console output or the video to see if the encoder is keeping up with your desired output frame rate: if it is not then use a faster preset and/or reduce your width x height or frame rate.
+- ultrafast
+- superfast
+- veryfast
+- faster
+- fast
+- medium
+- slow
+- slower
+- veryslow
+- placebo
+
+**__**
 
 ```sh
 ffmpeg -f v4l2 -i /dev/video0

@@ -58,10 +58,7 @@ apt upgrade
 apt install ffmpeg
 ```
 
-- ```
-  -ar[:stream_specifier] freq
-  (input/output,per-stream)
-  ```
+- `-ar[:stream_specifier] freq (input/output,per-stream)`
   <br>Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
 - `-ac[:stream_specifier] channels (input/output,per-stream)`
   <br>Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
@@ -69,8 +66,27 @@ apt install ffmpeg
   <br>Set the audio codec. This is an alias for `-codec:a`.
 - `-f fmt (input/output)`
   <br>Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
+- `-i url (input)`
+  <br>input file url
+- 
+
+- `c codec`
+  <br>Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
+  - c:v _codec:video_
+  - c:a _codec:audio_
 
 ```sh
+ffmpeg -f v4l2 -i /dev/video0
+  -f alsa -i hw:0,0
+  -c:v libx264 -pix_fmt yuv420p -framerate 30 -g 30 -b:v 500k
+  -c:a aac -b:a 128k -ar 44100 -ac 2
+  -preset ultrafast -tune zerolatency
+  -f flv rtmp://a.rtmp.youtube.com/live2/a8rx-y9t2-vrxh-cy6p-a5v6
+
+
+
+
+
 #! /bin/bash
 #
 

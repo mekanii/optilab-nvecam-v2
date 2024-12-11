@@ -70,15 +70,16 @@ apt install ffmpeg
   <br>input file url
 - 
 
-- `c codec`
+- `-c codec`
   <br>Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
   - c:v _codec:video_
   - c:a _codec:audio_
+- **_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**
 
 ```sh
 ffmpeg -f v4l2 -i /dev/video0
   -f alsa -i hw:0,0
-  -c:v libx264 -pix_fmt yuv420p -framerate 30 -g 30 -b:v 500k
+  -c:v libx264 -pix_fmt yuv420p -r 30 -g 30 -b:v 500k
   -c:a aac -b:a 128k -ar 44100 -ac 2
   -preset ultrafast -tune zerolatency
   -f flv rtmp://a.rtmp.youtube.com/live2/a8rx-y9t2-vrxh-cy6p-a5v6

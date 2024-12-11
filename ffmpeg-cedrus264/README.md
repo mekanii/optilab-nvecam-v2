@@ -58,19 +58,19 @@ apt upgrade
 apt install ffmpeg
 ```
 
-- `-ar[:stream_specifier] freq (input/output,per-stream)`
-  <br>Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
-- `-ac[:stream_specifier] channels (input/output,per-stream)`
-  <br>Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
-- `-acodec codec (input/output)`
-  <br>Set the audio codec. This is an alias for `-codec:a`.
-- `-f fmt (input/output)`
-  <br>Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
-- `-i url (input)`
-  <br>input file url
+**_-ar[:stream_specifier] freq (input/output,per-stream)_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
+**_-ac[:stream_specifier] channels (input/output,per-stream)_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
+**_-acodec codec (input/output)_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Set the audio codec. This is an alias for `-codec:a`.
 
-**_-c codec_**
-&nbsp;&nbsp;Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
+**_-f fmt (input/output)_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
+**_-i url (input)_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;input file url
+**_-c codec_**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
 - c:v _codec:video_
 - c:a _codec:audio_
 

@@ -58,9 +58,6 @@ apt upgrade
 apt install ffmpeg
 ```
 
-**_-acodec codec (input/output)_**<br>
-Set the audio codec. This is an alias for `-codec:a`.
-
 **_-f fmt (input/output)_**<br>
 Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
 
@@ -72,9 +69,13 @@ Select an encoder (when used before an output file) or a decoder (when used befo
 - -c:v _codec:video_
 - -c:a _codec:audio_
 
-**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**<br>
+**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**
 
-**_-b bitrate_**
+Set pixel format. Use -pix_fmts to show all the supported pixel formats. If the selected pixel format can not be selected, ffmpeg will print a warning and select the best pixel format supported by the encoder. If pix_fmt is prefixed by a +, ffmpeg will exit with an error if the requested pixel format can not be selected, and automatic conversions inside filtergraphs are disabled. If pix_fmt is a single +, ffmpeg selects the same pixel format as the input (or graph output) and automatic conversions are disabled.
+
+**_-r[:stream_specifier] fps (input/output,per-stream)_**
+
+**_-b bitrate_**<br>
 bitrate expressed in Kbits/s
 - -b:v _bitrate_video_
 - -b:a _bitrate_audio_
@@ -85,8 +86,9 @@ Set the audio sampling frequency. For output streams it is set by default to the
 **_-ac[:stream_specifier] channels (input/output,per-stream)_**<br>
 Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
 
-**_-preset preset_name_**
+**_-preset preset_name_**<br>
 Provides the compression to encoding speed ratio. Try **_-preset veryfast_** if you are unsure of what to choose, then watch the console output or the video to see if the encoder is keeping up with your desired output frame rate: if it is not then use a faster preset and/or reduce your width x height or frame rate.
+preset_name:
 - ultrafast
 - superfast
 - veryfast

@@ -58,10 +58,15 @@ apt upgrade
 apt install ffmpeg
 ```
 
-- `-ar[:stream_specifier] freq (input/output,per-stream)`
+- ```-ar[:stream_specifier] freq
+  (input/output,per-stream)```
   <br>Set the audio sampling frequency. For output streams it is set by default to the frequency of the corresponding input stream. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
 - `-ac[:stream_specifier] channels (input/output,per-stream)`
   <br>Set the number of audio channels. For output streams it is set by default to the number of input audio channels. For input streams this option only makes sense for audio grabbing devices and raw demuxers and is mapped to the corresponding demuxer options.
+- `-acodec codec (input/output)`
+  <br>Set the audio codec. This is an alias for `-codec:a`.
+- `-f fmt (input/output)`
+  <br>Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
 
 ```sh
 #! /bin/bash

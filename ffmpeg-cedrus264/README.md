@@ -69,7 +69,7 @@ apt install ffmpeg
 - `-i url (input)`
   <br>input file url
 
-**_-c codec_**<br>
+**_-c codec_**
 &nbsp;&nbsp;Select an encoder (when used before an output file) or a decoder (when used before an input file) for one or more streams. codec is the name of a decoder/encoder or a special value copy (output only) to indicate that the stream is not to be re-encoded.
 - c:v _codec:video_
 - c:a _codec:audio_

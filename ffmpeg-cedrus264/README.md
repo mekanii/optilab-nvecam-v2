@@ -69,11 +69,18 @@ Select an encoder (when used before an output file) or a decoder (when used befo
 - -c:v _codec:video_
 - -c:a _codec:audio_
 
-**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**
-
+**_-pix_fmt[:stream_specifier] format (input/output,per-stream)_**<br>
 Set pixel format. Use -pix_fmts to show all the supported pixel formats. If the selected pixel format can not be selected, ffmpeg will print a warning and select the best pixel format supported by the encoder. If pix_fmt is prefixed by a +, ffmpeg will exit with an error if the requested pixel format can not be selected, and automatic conversions inside filtergraphs are disabled. If pix_fmt is a single +, ffmpeg selects the same pixel format as the input (or graph output) and automatic conversions are disabled.
 
-**_-r[:stream_specifier] fps (input/output,per-stream)_**
+**_-r[:stream_specifier] fps (input/output,per-stream)_**<br>
+Set frame rate (Hz value, fraction or abbreviation).
+As an input option, ignore any timestamps stored in the file and instead generate timestamps assuming constant frame rate fps. This is not the same as the -framerate option used for some input formats like image2 or v4l2 (it used to be the same in older versions of FFmpeg). If in doubt use -framerate instead of the input option -r.
+As an output option:
+- video encoding
+Duplicate or drop frames right before encoding them to achieve constant output frame rate fps.
+
+- video streamcopy
+Indicate to the muxer that fps is the stream frame rate. No data is dropped or duplicated in this case. This may produce invalid files if fps does not match the actual stream frame rate as determined by packet timestamps. See also the setts bitstream filter.
 
 **_-b bitrate_**<br>
 bitrate expressed in Kbits/s

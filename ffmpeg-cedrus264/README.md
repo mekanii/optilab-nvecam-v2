@@ -72,7 +72,8 @@ Start the server:
 ```sh
 ./mediamtx
 ```
-`
+
+```
 MediaMTX v1.10.0
 configuration loaded from /root/mediamtx.yml
 [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
@@ -80,7 +81,7 @@ configuration loaded from /root/mediamtx.yml
 [HLS] listener opened on :8888
 [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
 [SRT] listener opened on :8890 (UDP)
-`
+```
 
 **_-f fmt (input/output)_**<br>
 Force input or output file format. The format is normally auto detected for input files and guessed from the file extension for output files, so this option is not needed in most cases.
@@ -141,18 +142,25 @@ preset_name:
 
 **__**
 
+Test record 640x480 yuyv h.264-enc b:v 700k -> 24fps - 30fps
 ```sh
-ffmpeg -f v4l2 -i /dev/video0
-  -f alsa -i hw:0,0
-  -c:v libx264 -pix_fmt yuv420p -s 640x480 -r 30 -g 30 -b:v 500k
-  -c:a aac -b:a 128k -ar 44100 -ac 2
-  -preset ultrafast -tune zerolatency
-  -f flv rtmp://a.rtmp.youtube.com/live2/a8rx-y9t2-vrxh-cy6p-a5v6
+ffmpeg -f v4l2 -input_format yuyv -video_size 640x480 -framerate 30 -i /dev/video0 -b:v 700k -c:v libx264 -preset ultrafast -tune zerolatency test-ffmpeg-output/yuyv_h264_640x480.mp4
+```
+Test record 800x600 yuyv h.264-enc b:v 800k -> 12fps - 20fps
+```sh
+ffmpeg -f v4l2 -input_format yuyv -video_size 800x600 -framerate 30 -i /dev/video0 -b:v 800k -c:v libx264 -preset ultrafast -tune zerolatency test-ffmpeg-output/yuyv_h264_800x600.mp4
+```
+Test record 800x600 mjpeg h.264-enc -> 24fps - 30fps
+```sh
+ffmpeg -f v4l2 -input_format mjpeg -video_size 800x600 -framerate 30 -i /dev/video0 -c:v libx264 -preset ultrafast -tune zerolatency test-ffmpega-output/mjpeg_h264_800x600.mp4
+```
+Test record 640x480 mjpeg h.264-enc -> 24fps - 30fps
+```sh
+ffmpeg -f v4l2 -input_format mjpeg -video_size 640x480 -framerate 30 -i /dev/video0 -c:v libx264 -preset ultrafast -tune zerolatency test-ffmpega-output/mjpeg_h264_640x480.mp4
+```
 
-
-
-
-
+Test stream to YouTube:
+```sh
 #! /bin/bash
 #
 
@@ -180,4 +188,34 @@ ffmpeg -re
 -g 50
 -strict experimental
 -f flv $YOUTUBE/$KEY
+```
+
+Move the server executable and configuration in global folders:
+```sh
+mv mediamtx /usr/local/bin/
+mv mediamtx.yml /usr/local/etc/
+```
+
+Create a systemd service:
+```sh
+sudo tee /etc/systemd/system/mediamtx.service >/dev/null << EOF
+[Unit]
+Wants=network.target
+[Service]
+ExecStart=/usr/local/bin/mediamtx /usr/local/etc/mediamtx.yml
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Make service permission executeable:
+```sh
+chmod 755 /etc/systemd/system/mediamtx.service
+```
+
+Enable and start the service:
+```sh
+sudo systemctl daemon-reload
+sudo systemctl enable mediamtx
+sudo systemctl start mediamtx
 ```

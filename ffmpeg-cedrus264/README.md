@@ -144,7 +144,7 @@ preset_name:
 
 Test record 640x480 yuyv h.264-enc b:v 700k -> 24fps - 30fps
 ```sh
-ffmpeg -f v4l2 -input_format yuyv -video_size 640x480 -framerate 30 -i /dev/video0 -b:v 700k -c:v libx264 -preset ultrafast -tune zerolatency test-ffmpeg-output/yuyv_h264_640x480.mp4
+ffmpeg -f v4l2 -input_format yuyv422 -video_size 640x480 -framerate 30 -i /dev/video0 -b:v 700k -c:v libx264_omx -preset ultrafast -tune zerolatency test-ffmpeg-output/yuyv_h264_640x480.mp4
 ```
 Test record 800x600 yuyv h.264-enc b:v 800k -> 12fps - 20fps
 ```sh
@@ -193,16 +193,21 @@ ffmpeg -re
 Move the server executable and configuration in global folders:
 ```sh
 mv mediamtx /usr/local/bin/
-mv mediamtx.yml /usr/local/etc/
+mv mediamtx.yaml /usr/local/etc/
 ```
+
+```sh
+/usr/local/bin/mediamtx /usr/local/etc/mediamtx.yaml
+```
+192.168.1.217:8889/stream480
 
 Create a systemd service:
 ```sh
-sudo tee /etc/systemd/system/mediamtx.service >/dev/null << EOF
+tee /etc/systemd/system/mediamtx.service >/dev/null << EOF
 [Unit]
 Wants=network.target
 [Service]
-ExecStart=/usr/local/bin/mediamtx /usr/local/etc/mediamtx.yml
+ExecStart=/usr/local/bin/mediamtx /usr/local/etc/mediamtx.yaml
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -218,4 +223,92 @@ Enable and start the service:
 sudo systemctl daemon-reload
 sudo systemctl enable mediamtx
 sudo systemctl start mediamtx
+```
+
+```sh
+echo '
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet static
+  address 192.168.10.1
+  netmask 255.255.255.0
+  broadcast 192.168.10.255
+  network 192.168.10.0
+' | tee /etc/network/interfaces
+```
+
+```sh
+echo '
+interface=wlan0
+ssid=OptiLab_NVeCam
+wpa_passphrase=12345678
+hw_mode=g
+ieee80211n=1
+channel=6
+wmm_enabled=1
+ignore_broadcast_ssid=0
+auth_algs=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+' | tee /etc/hostapd/hostapd.conf
+```
+
+```bash
+sed -i 's|^#DAEMON_CONF="/etc/hostapd.conf"|DAEMON_CONF="/etc/hostapd/hostapd.conf"|' /etc/default/hostapd
+```
+
+```bash
+sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
+
+echo '
+default-lease-time 600;
+max-lease-time 7200;
+option subnet-mask 255.255.255.0;
+option broadcast-address 192.168.10.255;
+option routers 192.168.10.1;
+option domain-name-servers 192.168.10.1,8.8.8.8;
+option domain-name "miconos.co.id";
+subnet 192.168.10.0 netmask 255.255.255.0 {
+range 192.168.10.100 192.168.10.150;
+}
+' | tee /etc/dhcp/dhcpd.conf
+
+sed -i 's|^INTERFACES=""|INTERFACES="wlan0"|' /etc/default/isc-dhcp-server
+
+sed -i 's|^#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
+
+sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
+
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+
+iptables -L -n -v
+
+sh -c "iptables-save > /etc/iptables.ipv4.nat"
+
+echo '
+iptables-restore < /etc/iptables.ipv4.nat
+exit 0
+' | tee /etc/rc.local
+```
+
+```sh
+systemctl daemon-reload
+
+systemctl stop NetworkManager.service
+systemctl disable NetworkManager.service
+
+systemctl start hostapd
+systemctl enable hostapd
+
+systemctl start isc-dhcp-server
+systemctl enable isc-dhcp-server
+
 ```

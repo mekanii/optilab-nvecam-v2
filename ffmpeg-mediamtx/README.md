@@ -253,30 +253,31 @@ preset_name:
 git clone https://github.com/mekanii/optilab-nvecam-v2/
 ```
 
+```sh
+cd optilab-nvecam-v2/ffmpeg-mediamtx
+```
+
+Set up a virtual environment:
+```sh
+  python3.9 -m venv venv
+```
+
+Activate the virtual environment to use the isolated Python environment:
+```sh
+  source venv/bin/activate
+```
+
+Install Flask using pip:
+```sh
+  pip3.9 install Flask
+```
+
+
+```sh
+  pip3.9 install flask-socketio
+```
+
 /scripts/local-premount
 chrony.service
 
 Starting chrony, an NTP client/server...
-
-
-sudo systemctl status isc-dhcp-server --no-pager -l
-● isc-dhcp-server.service - ISC DHCP IPv4 server
-     Loaded: loaded (8;;file://orangepizero3/lib/systemd/system/isc-dhcp-server.service/lib/systemd/system/isc-dhcp-server.service8;;; enabled; vendor preset: enabled)
-     Active: active (running) since Fri 2024-12-13 12:00:44 UTC; 3min 39s ago
-       Docs: 8;;man:dhcpd(8)man:dhcpd(8)8;;
-   Main PID: 1479 (dhcpd)
-      Tasks: 4 (limit: 1104)
-     Memory: 5.7M
-     CGroup: /system.slice/isc-dhcp-server.service
-             └─1479 dhcpd -user dhcpd -group dhcpd -f -4 -pf /run/dhcp-server/dhcpd.pid -cf /etc/dhcp/dhcpd.conf
-
-
-No subnet declaration for eth0 (no IPv4 addresses).
-** Ignoring requests on eth0.  If this is not what
-   you want, please write a subnet declaration
-   in your dhcpd.conf file for the network segment
-   to which interface eth0 is attached. **
-
-Sending on   Socket/fallback/fallback-net
-Can't create PID file /run/dhcp-server/dhcpd.pid: No such file or directory.
-Server starting service.

@@ -84,8 +84,11 @@ echo '
 auto lo
 iface lo inet loopback
 
-allow-hotplug eth0
-iface eth0 inet dhcp
+auto eth0
+iface eth0 inet static
+  address 192.168.10.2
+  netmask 255.255.255.0
+  gateway 192.168.10.1
 
 allow-hotplug wlan0
 iface wlan0 inet static
@@ -121,15 +124,15 @@ sudo sed -i 's|^#DAEMON_CONF="/etc/hostapd.conf"|DAEMON_CONF="/etc/hostapd/hosta
 sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.bak
 
 echo '
-default-lease-time 600;
-max-lease-time 7200;
-option subnet-mask 255.255.255.0;
-option broadcast-address 192.168.10.255;
-option routers 192.168.10.1;
-option domain-name-servers 192.168.10.1,8.8.8.8;
-option domain-name "miconos.co.id";
 subnet 192.168.10.0 netmask 255.255.255.0 {
-range 192.168.10.100 192.168.10.150;
+  range 192.168.10.100 192.168.10.150;
+  default-lease-time 600;
+  max-lease-time 7200;
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 192.168.10.255;
+  option routers 192.168.10.1;
+  option domain-name-servers 192.168.10.1,8.8.8.8;
+  option domain-name "miconos.co.id";
 }
 ' | sudo tee /etc/dhcp/dhcpd.conf
 
@@ -143,14 +146,26 @@ sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 
-iptables -L -n -v
+sudo iptables -L -n -v
 
 sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
+
+```sh
 echo '
-iptables-restore < /etc/iptables.ipv4.nat
-exit 0
-' | sudo tee /etc/rc.local
+[Unit]
+Description=iptables-restore
+
+[Service]
+Type=forking
+ExecStart=/bin/sh -c "iptables-restore < /etc/iptables.ipv4.nat && exit 0"
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+' | sudo tee /etc/systemd/system/rc-local.service
 ```
 
 ```sh
@@ -158,6 +173,11 @@ sudo systemctl daemon-reload
 
 sudo systemctl stop NetworkManager.service
 sudo systemctl disable NetworkManager.service
+
+sudo systemctl disable chronyd
+
+sudo systemctl start rc-local.service
+sudo systemctl enable rc-local.service
 
 sudo systemctl start hostapd
 sudo systemctl enable hostapd
@@ -225,3 +245,31 @@ preset_name:
 - placebo
 
 **__**
+
+/scripts/local-premount
+chrony.service
+
+Starting chrony, an NTP client/server...
+
+
+sudo systemctl status isc-dhcp-server --no-pager -l
+● isc-dhcp-server.service - ISC DHCP IPv4 server
+     Loaded: loaded (8;;file://orangepizero3/lib/systemd/system/isc-dhcp-server.service/lib/systemd/system/isc-dhcp-server.service8;;; enabled; vendor preset: enabled)
+     Active: active (running) since Fri 2024-12-13 12:00:44 UTC; 3min 39s ago
+       Docs: 8;;man:dhcpd(8)man:dhcpd(8)8;;
+   Main PID: 1479 (dhcpd)
+      Tasks: 4 (limit: 1104)
+     Memory: 5.7M
+     CGroup: /system.slice/isc-dhcp-server.service
+             └─1479 dhcpd -user dhcpd -group dhcpd -f -4 -pf /run/dhcp-server/dhcpd.pid -cf /etc/dhcp/dhcpd.conf
+
+
+No subnet declaration for eth0 (no IPv4 addresses).
+** Ignoring requests on eth0.  If this is not what
+   you want, please write a subnet declaration
+   in your dhcpd.conf file for the network segment
+   to which interface eth0 is attached. **
+
+Sending on   Socket/fallback/fallback-net
+Can't create PID file /run/dhcp-server/dhcpd.pid: No such file or directory.
+Server starting service.

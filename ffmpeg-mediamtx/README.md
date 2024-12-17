@@ -184,7 +184,10 @@ sudo systemctl enable hostapd
 
 sudo systemctl start isc-dhcp-server
 sudo systemctl enable isc-dhcp-server
+```
 
+```sh
+sh -c 'systemctl stop hostapd && systemctl stop isc-dhcp-server && systemctl start NetworkManager.service && nmcli dev wifi connect "miconos2" password "miconos1" && exit 0'
 ```
 
 **_-f fmt (input/output)_**<br>
@@ -245,6 +248,10 @@ preset_name:
 - placebo
 
 **__**
+
+```sh
+git clone https://github.com/mekanii/optilab-nvecam-v2/
+```
 
 /scripts/local-premount
 chrony.service

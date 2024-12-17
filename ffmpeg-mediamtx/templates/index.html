@@ -108,7 +108,7 @@
       const port = ':8889';
       const search = window.location.search;
 
-      const fullUrl = new URL(`${protocol}//${host}${port}${search}`);
+      // const fullUrl = new URL(`${protocol}//${host}${port}${search}`);
 
       new MediaMTXWebRTCReader({
         url: new URL('whep', window.location.href) + window.location.search,

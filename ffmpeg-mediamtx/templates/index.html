@@ -102,11 +102,9 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       loadAttributesFromQuery();
-      console.log(window.location.href)
-      console.log(window.location.search)
 
       new MediaMTXWebRTCReader({
-        url: new URL('whep', window.location.href) + window.location.search,
+        url: new URL('whep', window.location.host) + ':8889' + window.location.search,
         onError: (err) => {
           setMessage(err);
         },

@@ -84,12 +84,6 @@ echo '
 auto lo
 iface lo inet loopback
 
-auto eth0
-iface eth0 inet static
-  address 192.168.10.2
-  netmask 255.255.255.0
-  gateway 192.168.10.1
-
 allow-hotplug wlan0
 iface wlan0 inet static
   address 192.168.10.1
@@ -272,12 +266,48 @@ Install Flask using pip:
   pip3.9 install Flask
 ```
 
-
 ```sh
   pip3.9 install flask-socketio
 ```
 
-/scripts/local-premount
-chrony.service
+```sh
+  pip3.9 install gunicorn
+```
 
-Starting chrony, an NTP client/server...
+```sh
+  pip3.9 install eventlet
+```
+
+```sh
+echo 'mekanii ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/mekanii
+```
+
+```sh
+sudo chmod 440 /etc/sudoers.d/mekanii
+```
+
+```sh
+echo '
+[Unit]
+Description=OptiLab NVeCam Service
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/orangepi/optilab-nvecam-v2/ffmpeg-mediamtx
+ExecStart=/bin/bash -c "source venv/bin/activate && exec gunicorn -k eventlet -w 1 -b 0.0.0.0:1994 server:app"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+' | sudo tee /etc/systemd/system/optilab-nvecam.service
+```
+
+```sh
+sudo systemctl daemon-reload
+
+sudo systemctl enable optilab-nvecam.service
+sudo systemctl start optilab-nvecam.service
+
+journalctl -u optilab-nvecam.service -b --no-pager -l
+```

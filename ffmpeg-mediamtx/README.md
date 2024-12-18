@@ -181,7 +181,7 @@ sudo systemctl enable isc-dhcp-server
 ```
 
 ```sh
-sh -c 'systemctl stop hostapd && systemctl stop isc-dhcp-server && systemctl start NetworkManager.service && nmcli dev wifi connect "miconos2" password "miconos1" && exit 0'
+sudo sh -c 'systemctl stop hostapd && systemctl stop isc-dhcp-server && systemctl start NetworkManager.service && nmcli dev wifi connect "miconos2" password "miconos1" && exit 0'
 ```
 
 **_-f fmt (input/output)_**<br>

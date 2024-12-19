@@ -189,6 +189,18 @@ Modifies the `/etc/default/isc-dhcp-server` configuration file to specify that t
 sudo sed -i 's|^INTERFACES=""|INTERFACES="wlan0"|' /etc/default/isc-dhcp-server
 ```
 
+Use `dnsmasq` to redirect all DNS queries to the static IP address. This will ensure that any URL entered by the client will resolve to your Orange Pi.
+```sh
+sudo apt-get install dnsmasq
+```
+
+Configure `dnsmasq` by editing `/etc/dnsmasq.conf`:
+```sh
+interface=wlan0
+dhcp-range=192.168.10.100,192.168.10.150,12h
+address=/#/192.168.10.1
+```
+
 ## Setup Web Page UI
 
 Clones the optilab-nvecam-v2 repository from GitHub to your local machine. This creates a local copy of the repository, including all files and commit history. Used to obtain the source code and resources for the OptiLab NVeCam project, allowing you to work on or deploy the application.
@@ -262,7 +274,7 @@ sudo chmod 755 /etc/systemd/system/mediamtx.service
 
 Creates a systemd service file for the OptiLab NVeCam application. This service runs the application using Gunicorn with the Eventlet worker.
 ```sh
-echo '
+sudo tee /etc/systemd/system/optilab-nvecam.service > /dev/null << EOF
 [Unit]
 Description=OptiLab NVeCam Service
 Wants=network.target
@@ -270,12 +282,12 @@ Wants=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/orangepi/optilab-nvecam-v2/ffmpeg-mediamtx
-ExecStart=/bin/bash -c "source venv/bin/activate && exec gunicorn -k eventlet -w 1 -b 0.0.0.0:1994 server:app"
+ExecStart=/bin/bash -c "source venv/bin/activate && exec gunicorn -k eventlet -w 1 -b 0.0.0.0:80 server:app"
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-' | sudo tee /etc/systemd/system/optilab-nvecam.service
+EOF
 ```
 
 Reloads the systemd manager configuration. This is necessary after creating or modifying service files to ensure systemd recognizes the changes.

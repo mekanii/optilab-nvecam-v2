@@ -216,11 +216,14 @@ pathDefaults:
   runOnRecordSegmentComplete:
 
 paths:
+  stream720:
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 1280x720 -framerate 10 -i /dev/video0 -pix_fmt yuv422 -s 1280x720 -r 10 -b:v 4000000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+
   stream600:
-    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 800x600 -framerate 20 -i /dev/video0 -pix_fmt yuv420p -s 800x600 -r 20 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 800x600 -framerate 20 -i /dev/video0 -pix_fmt yuv422 -s 800x600 -r 20 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
     
   stream480:
-    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 640x480 -framerate 30 -i /dev/video0 -pix_fmt yuv420p -s 640x480 -r 30 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 640x480 -framerate 30 -i /dev/video0 -pix_fmt yuv422 -s 640x480 -r 30 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
 
   all_others:
 EOF

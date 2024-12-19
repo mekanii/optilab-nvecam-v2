@@ -79,8 +79,8 @@ preset_name:
 
 **__**
 
-## Downloading and Setting Up Mediamtx Server
-Downloads the mediamtx server package for ARM64 architecture. The server software needed to stream media over RTSP.
+## Downloading and Setting Up MediaMTX Server
+Downloads the MediaMTX server package for ARM64 architecture. The server software needed to stream media over RTSP.
 ```sh
 wget https://github.com/bluenviron/mediamtx/releases/download/v1.10.0/mediamtx_v1.10.0_linux_arm64v8.tar.gz
 ```
@@ -90,7 +90,7 @@ Extracts the contents of the downloaded tarball.
 tar -xzvf mediamtx_v1.10.0_linux_armv7.tar.gz
 ```
 
-Start the mediamtx.
+Start the MediaMTX.
 ```sh
 ./mediamtx
 ```
@@ -306,11 +306,6 @@ Disables the chronyd service, which is a daemon for the chrony package used to s
 sudo systemctl disable chronyd
 ```
 
-This command sequence stops the `hostapd` and `isc-dhcp-server` services, starts the `NetworkManager` service, and then uses `nmcli` to connect to a Wi-Fi network. This is useful for switching from a manually configured wireless access point setup back to using NetworkManager to manage Wi-Fi connections. It effectively transitions the system from acting as an access point to connecting to an existing Wi-Fi network.
-```sh
-sudo sh -c 'systemctl stop hostapd && systemctl stop isc-dhcp-server && systemctl start NetworkManager.service && nmcli dev wifi connect "miconos2" password "miconos1" && exit 0'
-```
-
 Starts the services immediately.
 ```sh
 sudo systemctl start hostapd
@@ -333,4 +328,46 @@ sudo systemctl enable hostapd
 sudo systemctl enable isc-dhcp-server
 sudo systemctl enable mediamtx
 sudo systemctl enable optilab-nvecam.service
+```
+
+Reboot the system to apply the changes.
+```sh
+reboot
+```
+
+## Last Configuration using SSH
+
+To connect to the WiFi Access Point created by orangepi, ensure your device is connected to the network with SSID `OptiLab_NVeCam` and password `12345678`. Then, open a terminal and use `ssh` to log in to orangepi, providing the orangepi password when prompted.
+```sh
+ssh orangepi@192.168.10.1
+```
+
+Edit `mediamtx.yml` to add paths.
+```sh
+sudo nano /usr/local/etc/mediamtx.yml
+```
+
+Add `paths` in MediaMTX configuration file.
+```yml
+paths:
+  stream720:
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 1280x720 -framerate 10 -i /dev/video0 -pix_fmt yuv422 -s 1280x720 -r 10 -b:v 4000000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+
+  stream600:
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 800x600 -framerate 20 -i /dev/video0 -pix_fmt yuv422 -s 800x600 -r 20 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+    
+  stream480:
+    runOnDemand: ffmpeg -f v4l2 -input_format yuyv422 -video_size 640x480 -framerate 30 -i /dev/video0 -pix_fmt yuv422 -s 640x480 -r 30 -b:v 1600000 -c:v libx264 -bf 0 -preset ultrafast -tune zerolatency -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+```
+
+Reboot the system to apply the changes.
+```sh
+reboot
+```
+
+## How to Connect to WiFi to Get Internet Connection
+
+This command sequence stops the `hostapd` and `isc-dhcp-server` services, starts the `NetworkManager` service, and then uses `nmcli` to connect to a Wi-Fi network. This is useful for switching from a manually configured wireless access point setup back to using NetworkManager to manage Wi-Fi connections. It effectively transitions the system from acting as an access point to connecting to an existing Wi-Fi network.
+```sh
+sudo sh -c 'systemctl stop hostapd && systemctl stop isc-dhcp-server && systemctl start NetworkManager.service && nmcli dev wifi connect "miconos2" password "miconos1" && exit 0'
 ```

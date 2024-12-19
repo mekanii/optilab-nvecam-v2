@@ -165,6 +165,9 @@
             const label = document.createElement('span');
             label.textContent = `${input.getAttribute('data-label')}: ${input.value}`;
             label.style.display = 'inline-block';
+            label.style.fontFamily = 'monospace';
+            label.style.fontSize = '14px';
+            label.style.fontWeight = 'normal';
 
             // Insert the label before the form-floating div
             div.parentNode.insertBefore(label, div);

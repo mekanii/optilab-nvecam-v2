@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" >
-  <link href="{{ url_for('static', filename='css/datepicker.min.css') }}" rel="stylesheet" >
+  <link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" >
+  <link href="{{ url_for('static', filename='css/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" >
   <style>
     html, body {
       margin: 0;
@@ -12,6 +13,7 @@
       height: 100%;
       font-family: 'Arial', sans-serif;
     }
+
     #message {
       position: absolute;
       left: 0;
@@ -30,6 +32,19 @@
       box-sizing: border-box;
       text-shadow: 0 0 5px black;
     }
+    
+    .form-floating > .select2-container > .selection > .select2-selection {
+      height: calc(3.5rem + 2px);
+      padding: 0.75rem 0.75rem;
+    }
+
+    .form-floating > .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+      margin-top: 12px;
+    }
+
+    .form-floating > label {
+      z-index: 1;
+    }
   </style>
   <script defer src="{{ url_for('static', filename='js/reader.js') }}"></script>
 </head>
@@ -37,24 +52,110 @@
 <body>
   <div class="container-fluid">
     <div id="row-input" class="row justify-content-center mt-3 gy-3">
-      <div class="col-sm-12 col-md-4 col-lg-3">
+      <div class="col-sm-12 col-md-3 col-lg-2">
         <div class="form-floating">
           <input class="form-control" id="nomor" placeholder="Nomor RM" data-label="Nomor RM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
           <label for="nomor">Nomor RM</label>
         </div>
       </div>
-      <div class="col-sm-12 col-md-4 col-lg-3">
+      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
         <div class="form-floating">
-          <input class="form-control datepicker_input" id="tgl_lahir" placeholder="yyyy/mm/dd" data-label="Tanggal Lahir">
-          <label for="tgl_lahir">Tanggal Lahir</label>
+          <select class="form-select" style="width: 100%" id="tanggal" placeholder="dd" data-label="Tanggal Lahir">
+            <option value="" selected hidden></option>
+            <option value="01">1</option>
+            <option value="02">2</option>
+            <option value="03">3</option>
+            <option value="04">4</option>
+            <option value="05">5</option>
+            <option value="06">6</option>
+            <option value="07">7</option>
+            <option value="08">8</option>
+            <option value="09">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+          <label for="tanggal">Tanggal</label>
         </div>
       </div>
-      <div class="col-sm-12 col-md-4 col-lg-2">
+      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+        <div class="form-floating">
+          <select class="form-select" style="width: 100%" id="bulan" placeholder="mm" data-label="Tanggal Lahir">
+            <option value="" selected hidden></option>
+            <option value="01">1</option>
+            <option value="02">2</option>
+            <option value="03">3</option>
+            <option value="04">4</option>
+            <option value="05">5</option>
+            <option value="06">6</option>
+            <option value="07">7</option>
+            <option value="08">8</option>
+            <option value="09">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <label for="bulan">Bulan</label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+        <div class="form-floating">
+          <select class="form-select" style="width: 100%" id="tahun" placeholder="yyyy" data-label="Tanggal Lahir">
+            <option value="" selected hidden></option>
+            <option value="">2024</option>
+            <option value="">2023</option>
+            <option value="">2022</option>
+            <option value="">2021</option>
+            <option value="">2020</option>
+            <option value="">2019</option>
+            <option value="">2018</option>
+            <option value="">2017</option>
+            <option value="">2016</option>
+            <option value="">2015</option>
+            <option value="">2014</option>
+            <option value="">2013</option>
+            <option value="">2012</option>
+            <option value="">2011</option>
+            <option value="">2010</option>
+            <option value="">2009</option>
+            <option value="">2008</option>
+            <option value="">2007</option>
+            <option value="">2006</option>
+            <option value="">2005</option>
+            <option value="">2004</option>
+            <option value="">2003</option>
+            <option value="">2002</option>
+            <option value="">2001</option>
+            <option value="">2000</option>
+          </select>
+          <label for="tahun">Tahun</label>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-3 col-lg-2">
         <button type="button" id="capture" class="btn btn-primary btn-lg w-100 h-100" onclick="printPageAsJPEG()">Capture</button>  
       </div>
     </div>
     <div class="row justify-content-center mt-3">
-      <div class="col-md-12 col-lg-8">
+      <div class="col-md-12 col-lg-10 col-xl-8">
         <div class="ratio ratio-4x3">
           <video id="video" class="w-100 h-100" style="background: rgb(30, 30, 30)"></video>
           <div id="message"></div>
@@ -63,8 +164,9 @@
     </div>
   </div>
 
+  <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/datepicker.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
   <script>
     const video = document.getElementById('video');
@@ -121,6 +223,11 @@
           video.srcObject = evt.streams[0];
         },
       });
+    });
+
+    $("#tanggal, #bulan, #tahun").select2({
+      theme: "bootstrap-5",
+      width: 'resolve'
     });
 
     /* Bootstrap 5 JS included */

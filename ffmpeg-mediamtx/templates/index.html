@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" >
-  <link href="{{ url_for('static', filename='css/select2.min.css') }}" rel="stylesheet" >
-  <link href="{{ url_for('static', filename='css/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" >
   <style>
     html, body {
       margin: 0;
@@ -32,18 +30,9 @@
       box-sizing: border-box;
       text-shadow: 0 0 5px black;
     }
-    
-    .form-floating > .select2-container > .selection > .select2-selection {
-      height: calc(3.5rem + 2px);
-      padding: 0.75rem 0.75rem;
-    }
 
-    .form-floating > .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
-      margin-top: 12px;
-    }
-
-    .form-floating > label {
-      z-index: 1;
+    .form-control::placeholder {
+      opacity: 1;
     }
   </style>
   <script defer src="{{ url_for('static', filename='js/reader.js') }}"></script>
@@ -51,112 +40,27 @@
 
 <body>
   <div class="container-fluid">
-    <div id="row-input" class="row justify-content-center mt-3 gy-3">
-      <div class="col-sm-12 col-md-3 col-lg-2">
+    <div id="row-input" class="row justify-content-center mb-3">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 pt-3">
         <div class="form-floating">
-          <input class="form-control" id="nomor" placeholder="Nomor RM" data-label="Nomor RM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+          <input class="form-control" id="nomor" placeholder="nomor" data-label="Nomor RM">
           <label for="nomor">Nomor RM</label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 pt-3">
         <div class="form-floating">
-          <select class="form-select" style="width: 100%" id="tanggal" placeholder="dd" data-label="Tanggal Lahir">
-            <option value="" selected hidden></option>
-            <option value="01">1</option>
-            <option value="02">2</option>
-            <option value="03">3</option>
-            <option value="04">4</option>
-            <option value="05">5</option>
-            <option value="06">6</option>
-            <option value="07">7</option>
-            <option value="08">8</option>
-            <option value="09">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-            <option value="22">22</option>
-            <option value="23">23</option>
-            <option value="24">24</option>
-            <option value="25">25</option>
-            <option value="26">26</option>
-            <option value="27">27</option>
-            <option value="28">28</option>
-            <option value="29">29</option>
-            <option value="30">30</option>
-            <option value="31">31</option>
-          </select>
-          <label for="tanggal">Tanggal</label>
+          <input class="form-control" id="tanggal" placeholder="dd / mm / yyyy" data-label="Tanggal Lahir">
+          <label for="tanggal">Tanggal Lahir</label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
-        <div class="form-floating">
-          <select class="form-select" style="width: 100%" id="bulan" placeholder="mm" data-label="Tanggal Lahir">
-            <option value="" selected hidden></option>
-            <option value="01">1</option>
-            <option value="02">2</option>
-            <option value="03">3</option>
-            <option value="04">4</option>
-            <option value="05">5</option>
-            <option value="06">6</option>
-            <option value="07">7</option>
-            <option value="08">8</option>
-            <option value="09">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <label for="bulan">Bulan</label>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
-        <div class="form-floating">
-          <select class="form-select" style="width: 100%" id="tahun" placeholder="yyyy" data-label="Tanggal Lahir">
-            <option value="" selected hidden></option>
-            <option value="">2024</option>
-            <option value="">2023</option>
-            <option value="">2022</option>
-            <option value="">2021</option>
-            <option value="">2020</option>
-            <option value="">2019</option>
-            <option value="">2018</option>
-            <option value="">2017</option>
-            <option value="">2016</option>
-            <option value="">2015</option>
-            <option value="">2014</option>
-            <option value="">2013</option>
-            <option value="">2012</option>
-            <option value="">2011</option>
-            <option value="">2010</option>
-            <option value="">2009</option>
-            <option value="">2008</option>
-            <option value="">2007</option>
-            <option value="">2006</option>
-            <option value="">2005</option>
-            <option value="">2004</option>
-            <option value="">2003</option>
-            <option value="">2002</option>
-            <option value="">2001</option>
-            <option value="">2000</option>
-          </select>
-          <label for="tahun">Tahun</label>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-3 col-lg-2">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 pt-3">
         <button type="button" id="capture" class="btn btn-primary btn-lg w-100 h-100" onclick="printPageAsJPEG()">Capture</button>  
       </div>
+      <div id="datetime" class="col-4 text-end"></div>
     </div>
-    <div class="row justify-content-center mt-3">
-      <div class="col-md-12 col-lg-10 col-xl-8">
-        <div class="ratio ratio-4x3">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-8">
+        <div class="ratio ratio-4x3 border">
           <video id="video" class="w-100 h-100" style="background: rgb(30, 30, 30)"></video>
           <div id="message"></div>
         </div>
@@ -166,7 +70,7 @@
 
   <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.inputmask.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
   <script>
     const video = document.getElementById('video');
@@ -225,81 +129,60 @@
       });
     });
 
-    $("#tanggal, #bulan, #tahun").select2({
-      theme: "bootstrap-5",
-      width: 'resolve'
-    });
-
-    /* Bootstrap 5 JS included */
-    /* vanillajs-datepicker 1.1.4 JS included */
-
-    const getDatePickerTitle = elem => {
-      // From the label or the aria-label
-      const label = elem.nextElementSibling;
-      let titleText = '';
-      if (label && label.tagName === 'LABEL') {
-        titleText = label.textContent;
-      } else {
-        titleText = elem.getAttribute('aria-label') || '';
-      }
-      return titleText;
-    }
-
-    const elems = document.querySelectorAll('.datepicker_input');
-    for (const elem of elems) {
-      const datepicker = new Datepicker(elem, {
-        format: 'yyyy/mm/dd',
-        title: getDatePickerTitle(elem),
-        autohide: true
-      });
-    }
+    $("#tanggal").inputmask("dd/mm/yyyy");
 
     function printPageAsJPEG() {
       const width = 640;
       const height = 480;
-      console.log(document.body.style.height);
       const originalBodyWidth = document.body.style.width;
       document.body.style.width = `${width}px`;
-      console.log(document.body.style.height);
 
-      // Select all form-floating divs
       const formDivs = document.querySelectorAll('.form-floating');
 
       formDivs.forEach(div => {
         const input = div.querySelector('input');
           if (input) {
-            // Create a label with the input's value
             const label = document.createElement('span');
-            label.textContent = `${input.getAttribute('data-label')}: ${input.value}`;
+            label.textContent = `${input.getAttribute('data-label')} : ${input.value}`;
             label.style.display = 'inline-block';
             label.style.fontFamily = 'monospace';
-            label.style.fontSize = '14px';
+            label.style.fontSize = '12px';
             label.style.fontWeight = 'normal';
 
-            // Insert the label before the form-floating div
             div.parentNode.insertBefore(label, div);
 
-            // Hide the entire form-floating div
             div.style.display = 'none';
 
-            // Change parent div class to col-12
             div.parentNode.dataset.originalClass = div.parentNode.className;
-            div.parentNode.classList.remove('col-sm-12', 'col-md-4', 'col-lg-3');
-            div.parentNode.classList.add('col-12');
+            div.parentNode.classList.remove('col-xs-12', 'col-sm-4', 'col-md-4', 'col-lg-3', 'pt-3');
+            div.parentNode.classList.add('col-4');
           }
       });
+      
+      const date = new Date();
+      const currentDateTime = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
 
+      
       const rowInputDiv = document.querySelector('#row-input')
       rowInputDiv.dataset.originalClass = rowInputDiv.className;
-      rowInputDiv.classList.remove('mt-3', 'gy-3');
+      rowInputDiv.classList.remove('mb-3');
+      
+      const label = document.createElement('span');
+      label.textContent = `${currentDateTime}`;
+      label.style.display = 'inline-block';
+      label.style.fontFamily = 'monospace';
+      label.style.fontSize = '12px';
+      label.style.fontWeight = 'normal';
+      
+      const dateTimeDiv = rowInputDiv.querySelector('#datetime')
+      dateTimeDiv.classList.remove('d-none');
+      dateTimeDiv.appendChild(label);
 
-      // Hide all buttons
       const buttons = document.querySelectorAll('button');
       buttons.forEach(button => {
-        button.style.display = 'none';
+        button.parentNode.classList.add('d-none');
       });
 
-      // Change the grandparent class of the video element
       const video = document.querySelector('video');
       if (video) {
           const grandparentDiv = video.parentNode.parentNode;
@@ -308,51 +191,47 @@
           grandparentDiv.classList.add('col-12');
       }
 
-      // Use html2canvas to capture the page
+      const scale = window.devicePixelRatio;
       html2canvas(document.body, {
         width: width,
-        height: height + 60,
+        height: height + 20,
         windowWidth: width,
-        windowHeight: height + 60
+        windowHeight: height + 20
       }).then(canvas => {
-        // Convert the resized canvas to a JPEG image
         const imgData = canvas.toDataURL('image/jpeg');
 
-        // Create a link to download the image
         const link = document.createElement('a');
         link.href = imgData;
-        const date = new Date();
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`;
         link.download = `capture ${formattedDate}.jpeg`;
         link.click();
-
-        // Restore the original state
-        document.body.style.width = originalBodyWidth;
-
-        // Restore the original state
-        formDivs.forEach(div => {
-          div.style.display = ''; // Show the form-floating div
-          div.previousSibling.remove(); // Remove the label
-
-          // Restore the original class of the parent div
-          div.parentNode.className = div.parentNode.dataset.originalClass;
-          delete div.parentNode.dataset.originalClass;
-        });
-
-        rowInputDiv.className = rowInputDiv.dataset.originalClass;
-        delete rowInputDiv.dataset.originalClass;
-
-        buttons.forEach(button => {
-          button.style.display = '';
-        });
-
-        // Restore the original class of the grandparent div of the video
-        if (video) {
-          const grandparentDiv = video.parentNode.parentNode;
-          grandparentDiv.className = grandparentDiv.dataset.originalClass;
-          delete grandparentDiv.dataset.originalClass;
-        }
       });
+
+      document.body.style.width = originalBodyWidth;
+
+      dateTimeDiv.classList.add('d-none');
+      dateTimeDiv.removeChild(label)
+
+      formDivs.forEach(div => {
+        div.style.display = '';
+        div.previousSibling.remove();
+
+        div.parentNode.className = div.parentNode.dataset.originalClass;
+        delete div.parentNode.dataset.originalClass;
+      });
+
+      rowInputDiv.className = rowInputDiv.dataset.originalClass;
+      delete rowInputDiv.dataset.originalClass;
+
+      buttons.forEach(button => {
+        button.parentNode.classList.remove('d-none');
+      });
+      
+      if (video) {
+        const grandparentDiv = video.parentNode.parentNode;
+        grandparentDiv.className = grandparentDiv.dataset.originalClass;
+        delete grandparentDiv.dataset.originalClass;
+      }
     }
   </script>
 
